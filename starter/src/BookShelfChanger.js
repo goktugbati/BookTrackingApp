@@ -6,7 +6,7 @@ const BookShelfChanger = ({handleChangeStatus, shelf}) => {
         handleChangeStatus(e.target.value);
     }
  return(
-     <div>
+     <div className="book-shelf-changer">
          <select onChange={handleChangeOption} value={shelf ? shelf : 'none'}>
              <option value="none" disabled>
                  Move to...

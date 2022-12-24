@@ -8,7 +8,6 @@ const BookShelves = () => {
     const getBooks = async () => {
         const res = await BooksAPI.getAll();
         setBooks(res)
-        console.log(res);
     }
 
     useEffect(() => {
@@ -18,7 +17,7 @@ const BookShelves = () => {
         };
     }, []);
 
-    const handleUpdateStatus = (book, status) => {
+    const handleShelfChange = (book, status) => {
         BooksAPI.update(book, status).then(() => {
             book.shelf = status
             setBooks([...books])
@@ -32,11 +31,11 @@ const BookShelves = () => {
             </div>
             <div className="list-books-content">
                 <div>
-                    <BookShelf handleUpdateStatus={handleUpdateStatus} bookList={books}
+                    <BookShelf handleUpdateStatus={handleShelfChange} bookList={books}
                                shelfTitle="Currently Reading" shelf='currentlyReading'/>
-                    <BookShelf handleUpdateStatus={handleUpdateStatus} bookList={books}
+                    <BookShelf handleUpdateStatus={handleShelfChange} bookList={books}
                                shelfTitle="Want To Read" shelf='wantToRead'/>
-                    <BookShelf handleUpdateStatus={handleUpdateStatus} bookList={books} shelfTitle="Read"
+                    <BookShelf handleUpdateStatus={handleShelfChange} bookList={books} shelfTitle="Read"
                                shelf='read'/>
                 </div>
             </div>
