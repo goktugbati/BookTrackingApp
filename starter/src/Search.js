@@ -1,27 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Book from "./Book";
-import {useNavigate} from "react-router-dom";
+import * as BooksAPI from "./BooksAPI";
 
-const Search = ({books, handleUpdateStatus}) => {
+const Search = () => {
     const [searchResult, setSearchResult] = useState([]);
-    const navigate = useNavigate();
-
     const handleSearch = (e) => {
-        const currentSearchResult = books.filter(book => book.title.toLowerCase().includes(e.target.value));
-        setSearchResult(currentSearchResult);
+        searchBooks(e.target.value);
     }
 
-    useEffect(() => {
-        setSearchResult(books);
-    }, [books]);
+    const handleUpdateStatus = (book, status) => {
+        BooksAPI.update(book, status).then(() => {
+        });
+    }
 
+    const searchBooks = async (query) => {
+        if (query) {
+            const res = await BooksAPI.search(query, 40);
+            if (!res.error) {
+                console.log(res);
+                setSearchResult(res);
+            } else {
+                setSearchResult([]);
+            }
+        }
+    }
 
     return (
         <div className="search-books">
             <div className="search-books-bar">
                 <a
                     className="close-search"
-                    onClick={navigate('/')}
+                    href="/"
                 >
                     Close
                 </a>
@@ -35,8 +44,9 @@ const Search = ({books, handleUpdateStatus}) => {
             </div>
             <div className="search-books-results">
                 <ol className="books-grid">
-                    {searchResult.map((book) => <li key={book.id}><Book handleUpdateStatus={handleUpdateStatus}
-                                                                        book={book}/></li>)}
+                    {searchResult.map((book) => <li key={book.id}><Book
+                        handleUpdateStatus={handleUpdateStatus}
+                        book={book}/></li>)}
                 </ol>
             </div>
         </div>);

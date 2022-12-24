@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import BookShelf from "./BookShelf";
-import {useNavigate} from "react-router-dom";
+import * as BooksAPI from "./BooksAPI";
 
-const BookShelves = ({books, handleUpdateStatus}) => {
-    const navigate = useNavigate();
+const BookShelves = () => {
+    const [books, setBooks] = useState([]);
+
+    const getBooks = async () => {
+        const res = await BooksAPI.getAll();
+        setBooks(res)
+        console.log(res);
+    }
+
+    useEffect(() => {
+        getBooks();
+        return () => {
+            setBooks([]);
+        };
+    }, []);
+
+    const handleUpdateStatus = (book, status) => {
+        BooksAPI.update(book, status).then(() => {
+            book.shelf = status
+            setBooks([...books])
+        });
+    }
 
     return (
         <div className="list-books">
@@ -21,9 +41,7 @@ const BookShelves = ({books, handleUpdateStatus}) => {
                 </div>
             </div>
             <div className="open-search">
-                <a onClick={() => {
-                    navigate('/search');
-                }}>Add a book</a>
+                <a href='/search'>Add a book</a>
             </div>
         </div>    );
 };
