@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import BookShelfChanger from "./BookShelfChanger";
 import * as BooksAPI from "./BooksAPI";
+import PropTypes from 'prop-types';
 
-const Book = ({book,handleUpdateStatus}) => {
+const Book = ({book, handleUpdateStatus}) => {
     const [shelf, setShelf] = useState('none');
     const handleChangeStatus = (status) => {
         handleUpdateStatus(book, status);
@@ -15,9 +16,9 @@ const Book = ({book,handleUpdateStatus}) => {
             setShelf(res.shelf);
         }
 
-        if (book.shelf){
+        if (book.shelf) {
             setShelf(book.shelf);
-        }else {
+        } else {
             getBookShelf();
         }
         return () => {
@@ -45,5 +46,11 @@ const Book = ({book,handleUpdateStatus}) => {
         </div>
     );
 };
+
+Book.propTypes = {
+    book: PropTypes.object.isRequired,
+    handleUpdateStatus: PropTypes.func.isRequired
+};
+
 
 export default Book;

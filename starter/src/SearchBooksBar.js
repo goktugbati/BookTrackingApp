@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 const SearchBooksBar = ({handleSearch}) => {
     return (
@@ -21,3 +22,6 @@ const SearchBooksBar = ({handleSearch}) => {
 }
 
 export default SearchBooksBar;
+SearchBooksBar.propTypes = {
+    handleSearch: PropTypes.func.isRequired
+}
